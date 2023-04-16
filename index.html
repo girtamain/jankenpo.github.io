@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styling.css" />
+
+    <title>JankenPo Mini Games</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
+  </head>
+
+  <body>
+    <!-- tampil -->
+    <div class="tampil" id="tampil">
+      <div class="tampil-body">
+        <div>
+          <h1>hallo</h1>
+          <p>this is an insignificant task but thanks for coming (◕‿◕)</p>
+          <p>there is still a bug here hehe</p>
+          <button onclick=" putarmusic()">Enter</button>
+        </div>
+      </div>
+    </div>
+    <!-- tampil -->
+
+    <audio id="myAudio">
+      <source src="sound/kerjabagus.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+
+    <div id="app">
+      <div class="summary">
+        <h1 class="title">MATCH RESULT</h1>
+        <br />
+        <h1 id="inGame"></h1>
+        <h3 id="result"></h3>
+      </div>
+      <div class="games">
+        <div class="option" onclick="pickOption('batu')">Batu</div>
+        <div class="option" onclick="pickOption('gunting')">gunting</div>
+        <div class="option" onclick="pickOption('kertas')">kertas</div>
+      </div>
+    </div>
+
+    <script>
+      class Start {
+        constructor() {
+          this.playerName = "Player";
+          this.botName = "Musuh";
+          this.playerOption;
+          this.botOption;
+          this.winner = "";
+        }
+
+        get getBotOption() {
+          return this.botOption;
+        }
+
+        set setBotOption(option) {
+          this.botOption = option;
+        }
+
+        get getPlayerOption() {
+          return this.playerOption;
+        }
+
+        set setPlayerOption(option) {
+          this.playerOption = option;
+        }
+
+        botBrain() {
+          const option = ["batu", "gunting", "kertas"];
+          const bot = option[Math.floor(Math.random() * option.length)];
+          return bot;
+        }
+
+        winCalculation() {
+          if (this.botOption == "kertas" && this.playerOption == "gunting") {
+            return (this.winner = this.playerName);
+          } else if (this.botOption == "kertas" && this.playerOption == "batu") {
+            return (this.winner = this.botName);
+          } else if (this.botOption == "gunting" && this.playerOption == "kertas") {
+            return (this.winner = this.botName);
+          } else if (this.botOption == "gunting" && this.playerOption == "batu") {
+            return (this.winner = this.playerName);
+          } else if (this.botOption == "batu" && this.playerOption == "kertas") {
+            return (this.winner = this.playerName);
+          } else if (this.botOption == "batu" && this.playerOption == "gunting") {
+            return (this.winner = this.botName);
+          } else {
+            return (this.winner = "SERI");
+          }
+        }
+
+        matchResult() {
+          if (this.winner != "SERI") {
+            return `${this.winner} MENANG!`;
+          } else {
+            return `WAAA ${this.winner}, GAK ADA YG MENANG 🤪`;
+          }
+        }
+      }
+      var x = document.getElementById("myAudio");
+      function pickOption(params) {
+        const start = new Start();
+        start.setPlayerOption = params;
+        start.setBotOption = start.botBrain();
+        start.winCalculation();
+
+        const inGame = document.getElementById("inGame");
+        const result = document.getElementById("result");
+
+        inGame.textContent = "Juri Melihat";
+        result.textContent = ".";
+
+        let loaded = setInterval(() => {
+          inGame.textContent = inGame.textContent + ".";
+          result.textContent = result.textContent + ".";
+        }, 400);
+
+        setTimeout(() => {
+          clearInterval(loaded);
+          inGame.textContent = `${start.getPlayerOption} VS ${start.getBotOption}`;
+          result.textContent = start.matchResult();
+        }, 2000);
+
+        x.play();
+      }
+    </script>
+
+    <!-- javascrip -->
+    <script>
+      var a = document.getElementById("tampil");
+      function putarmusic() {
+        a.style.display = "none";
+        var audio = new Audio("sound/bgm22.mp3");
+        audio.play();
+        audio.loop = true;
+      }
+    </script>
+    <!-- javascrip akhir -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+  </body>
+</html>
